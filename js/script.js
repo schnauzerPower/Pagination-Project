@@ -54,7 +54,7 @@ function appendPageLinks() {
         if(newLinkIndicator === 10 || x === listItems.length - 1) {
             newLinkIndicator = 1;
             pageNumber++;
-            const linkListItem = document.createElement('span');
+            const linkListItem = document.createElement('li');
             linkListItem.textContent = pageNumber;
             linkList.appendChild(linkListItem);
             
