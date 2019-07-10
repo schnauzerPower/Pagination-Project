@@ -18,6 +18,11 @@ FSJS project 2 - List Filter and Pagination
 ***/
 const listItems = document.getElementsByClassName('student-item');
 const page = document.querySelector('.page');
+var isFloat = (listItems.length / 10) % 1 !== 0;
+
+
+
+
 
 
 /*** 
@@ -35,15 +40,72 @@ const page = document.querySelector('.page');
        "invoke" the function 
 ***/
 
+function showPage() {
+    appendPageLinks();
+    const a = document.getElementsByTagName('a');
+    const ul = document.querySelector('.pagination');
+    for(let x = 0; x < 10; x++) {
+        listItems[x].style.display = 'block';
+    }
+    a[0].classList.add('active');
+    ul.addEventListener('click', (e)=> {
+        const end = parseInt(e.target.textContent + 0);
+        if(e.target.nodeName === 'A') {
+            if(e.target.textContent == a.length && isFloat) {
+                console.log("Not here");
+               for(let x = end - 10; x < listItems.length; x++) {
+                listItems[x].style.display = 'block';
+                }
+            }else {
+                for(let x = end - 10; x < end; x++) {
+                    listItems[x].style.display = 'block';
+                }
+            }
+            a[parseInt(e.target.textContent) - 1].classList.add('active');
+            for(let x = 0; x < 10; x++) {
+                listItems[x].style.display = 'none';
+            }
+            a[0].classList.remove('active');
+            
+        }
+        
+        
+    })
+}
 
-
+showPage();
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
 
+
 function appendPageLinks() {
+    const linkList = document.createElement('ul');
+    linkList.classList.add("pagination");
+    page.appendChild(linkList);
+    
+    for(let x = 1; x<=Math.floor(listItems.length / 10); x++) {
+        
+        const linkListItem = document.createElement('li');
+        const a = document.createElement('a');
+        a.textContent = x;
+        linkListItem.appendChild(a);
+        linkList.appendChild(linkListItem);
+        
+        
+        if(x === Math.floor(listItems.length / 10)  && isFloat === true) {
+            const linkListItem = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = x + 1;
+            linkListItem.appendChild(a);
+            linkList.appendChild(linkListItem);
+        }
+    }
+}
+
+/*function appendPageLinks() {
     const linkList = document.createElement('ul');
     linkList.classList.add("pagination");
     page.appendChild(linkList);
@@ -62,9 +124,9 @@ function appendPageLinks() {
             
         }
     }
-}
+}*/
 
-appendPageLinks();
+
 
 
 
