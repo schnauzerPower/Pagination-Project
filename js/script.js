@@ -42,30 +42,44 @@ var isFloat = (listItems.length / 10) % 1 !== 0;
 
 function showPage() {
     appendPageLinks();
+    const deactivateQueue = [];
     const a = document.getElementsByTagName('a');
     const ul = document.querySelector('.pagination');
     for(let x = 0; x < 10; x++) {
         listItems[x].style.display = 'block';
     }
     a[0].classList.add('active');
+    deactivateQueue.push(a[0].textContent);
     ul.addEventListener('click', (e)=> {
-        const end = parseInt(e.target.textContent + 0);
+        const showEndIndex = parseInt(e.target.textContent + 0);
         if(e.target.nodeName === 'A') {
             if(e.target.textContent == a.length && isFloat) {
-                console.log("Not here");
-               for(let x = end - 10; x < listItems.length; x++) {
+               for(let x = showEndIndex - 10; x < listItems.length; x++) {
                 listItems[x].style.display = 'block';
                 }
             }else {
-                for(let x = end - 10; x < end; x++) {
+                for(let x = showEndIndex - 10; x < showEndIndex; x++) {
                     listItems[x].style.display = 'block';
                 }
             }
             a[parseInt(e.target.textContent) - 1].classList.add('active');
-            for(let x = 0; x < 10; x++) {
+            deactivateQueue.push(a[parseInt(e.target.textContent) - 1].textContent);
+            const hideEndIndex = parseInt(deactivateQueue[0] + 0);
+          
+            if(deactivateQueue[0] == a.length && isFloat) {
+                
+               for(let x = hideEndIndex - 10; x < listItems.length; x++) {
                 listItems[x].style.display = 'none';
+                }
+            }else {
+                for(let x = hideEndIndex - 10; x < hideEndIndex; x++) {
+                    listItems[x].style.display = 'none';
+                }
             }
-            a[0].classList.remove('active');
+            a[parseInt(deactivateQueue[0] - 1)].classList.remove('active');
+            deactivateQueue.shift();
+            /*console.log(deactivateQueue);*/
+            
             
         }
         
