@@ -19,6 +19,13 @@ FSJS project 2 - List Filter and Pagination
 const listItems = document.getElementsByClassName('student-item');
 const page = document.querySelector('.page');
 var isFloat = (listItems.length / 10) % 1 !== 0;
+const linkList = document.createElement('ul');
+linkList.classList.add("pagination");
+page.appendChild(linkList);
+
+
+
+
 
 
 /*** 
@@ -41,9 +48,8 @@ function showPage() {
     const deactivateQueue = [];
     const a = document.getElementsByTagName('a');
     const ul = document.querySelector('.pagination');
-    for(let x = 10; x < listItems.length; x++) { /*This is the js I use to hide list items on the page load. On refresh there is an unsightly flash of 
-                                                   the hidden list items that I would like to eliminate*/
-        listItems[x].style.display = 'none';
+    for(let x = 0; x < 10; x++) {
+        listItems[x].style.display = 'block';
     }
     a[0].classList.add('active');
     deactivateQueue.push(a[0].textContent);
@@ -93,33 +99,40 @@ showPage();
 
 
 function appendPageLinks() {
-    const linkList = document.createElement('ul');
-    linkList.classList.add("pagination");
-    page.appendChild(linkList);
     
     for(let x = 1; x<=Math.floor(listItems.length / 10); x++) {
-        
-        const linkListItem = document.createElement('li');
-        const a = document.createElement('a');
-        a.textContent = x;
-        linkListItem.appendChild(a);
-        linkList.appendChild(linkListItem);
-        
+        createListItem(x);
         
         if(x === Math.floor(listItems.length / 10)  && isFloat === true) {
-            const linkListItem = document.createElement('li');
-            const a = document.createElement('a');
-            a.textContent = x + 1;
-            linkListItem.appendChild(a);
-            linkList.appendChild(linkListItem);
+            createListItem(x + 1)
         }
     }
 }
 
-
-
-
-
-
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+function createListItem(textContent) {
+    const linkListItem = document.createElement('li');
+    const a = document.createElement('a');
+    a.textContent = textContent;
+    linkListItem.appendChild(a);
+    linkList.appendChild(linkListItem);
+}
+/*function appendPageLinks() {
+    const linkList = document.createElement('ul');
+    linkList.classList.add("pagination");
+    page.appendChild(linkList);
+    let newLinkIndicator = 1;
+    let pageNumber = 0;
+    for(let x = 0; x<listItems.length; x++) {
+        newLinkIndicator++;
+        if(newLinkIndicator === 10 || x === listItems.length - 1) {
+            newLinkIndicator = 1;
+            pageNumber++;
+            const linkListItem = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = pageNumber;
+            linkListItem.appendChild(a);
+            linkList.appendChild(linkListItem);
+            
+        }
+    }
+}*/
